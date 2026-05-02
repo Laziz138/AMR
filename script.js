@@ -44,6 +44,14 @@ async function startRobot() {
     statusEl.style.color = "#6366f1";
     writeLog("✅ Barcha vazifalar yakunlandi.");
 }
+// startRobot funksiyasi ichiga qo'shing:
+const startBtn = document.querySelector('.btn-start');
+startBtn.disabled = true; // Ish boshlanganda tugmani o'chirish
+startBtn.style.opacity = '0.5';
+
+// while sikli tugagandan keyin:
+startBtn.disabled = false; // Ish tugagach yoqish
+startBtn.style.opacity = '1';
 
 // 5-bosqich: Robotning asosiy harakat logikasi
 async function processStep(p) {
