@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMR Dashboard | Smart Warehouse</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="glass-panel">
+        <h2>🎮 AMR CONTROL</h2>
+        
+        <div class="form-group">
+            <label>📍 Borish zonasi</label>
+            <select id="zoneSelect">
+                <option value="A">Zona A (Qabul)</option>
+                <option value="B">Zona B (Saqlash)</option>
+                <option value="C">Zona C (Chiqish)</option>
+            </select>
+            <button class="btn-add" onclick="addParcel()">📦 Posilka qo'shish</button>
+        </div>
+
+        <div class="queue-container" id="queueList">
+            </div>
+
+        <button class="btn-start" onclick="startRobot()">⚡ ROBOTNI ISHGA TUSHIRISH</button>
+    </div>
+
+    <div class="right-section">
+        <div class="status-display">
+            <div class="robot-stat">
+                <p>Holat</p>
+                <span id="robotStatus">KUTISHDA</span>
+            </div>
+            <div class="robot-stat">
+                <p>Navbat</p>
+                <span id="queueCount">0</span>
+            </div>
+            <div class="robot-stat">
+                <p>Batareya</p>
+                <span style="color: #22c55e;">98%</span>
+            </div>
+        </div>
+
+        <div class="log-window" id="logWindow">
+            <div class="log-entry">🟢 Tizim tayyor. Buyruq kutilmoqda...</div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+:root {
+    --primary: #6366f1;
+    --secondary: #a855f7;
+    --dark: #0f172a;
+    --bg: #1e293b;
+    --success: #22c55e;
+    --warning: #f59e0b;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--dark);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 25px;
+    width: 95%;
+    max-width: 1200px;
+    height: 85vh;
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+select, button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+select { background: rgba(255, 255, 255, 0.1); color: white; cursor: pointer; }
+
+.btn-add {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-start {
+    background: var(--success);
+    color: white;
+    font-weight: bold;
+    margin-top: auto;
+    cursor: pointer;
+}
+
+.queue-container { margin-top: 20px; flex-grow: 1; overflow-y: auto; }
+
+.queue-item {
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.right-section { display: grid; grid-template-rows: 150px 1fr; gap: 20px; }
+
+.status-display {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.robot-stat span { display: block; font-size: 24px; font-weight: bold; color: var(--primary); }
+
+.log-window {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+    padding: 20px;
+    font-family: monospace;
+    overflow-y: auto;
+}
+
+.log-entry { margin-bottom: 8px; font-size: 13px; border-left: 2px solid var(--primary); padding-left: 10px; }
