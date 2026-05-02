@@ -1,7 +1,6 @@
 let queue = [];
 let isRunning = false;
 
-// 2-bosqich: Posilka qo'shish
 function addParcel() {
     const zone = document.getElementById('zoneSelect').value;
     const id = Math.floor(1000 + Math.random() * 9000);
@@ -11,7 +10,6 @@ function addParcel() {
     writeLog(`Yangi posilka qo'shildi: #${id} -> ${zone}`);
 }
 
-// 3-bosqich: Navbatni vizuallashtirish
 function updateUI() {
     const list = document.getElementById('queueList');
     list.innerHTML = queue.map(p => `
@@ -23,37 +21,38 @@ function updateUI() {
     document.getElementById('queueCount').innerText = queue.length;
 }
 
-// 4-bosqich: Robotni ishga tushirish
 async function startRobot() {
+    // 1. Tekshiruv: agar robot band bo'lsa yoki navbat bo'sh bo'lsa, funksiyadan chiqish
     if (isRunning || queue.length === 0) return;
     
     isRunning = true;
     const statusEl = document.getElementById('robotStatus');
+    const startBtn = document.querySelector('.btn-start'); // Tugmani ushlab olish
+
+    // 2. Tugmani o'chirish (Visual effect)
+    startBtn.disabled = true;
+    startBtn.style.opacity = '0.5';
+    startBtn.style.cursor = 'not-allowed';
     statusEl.innerText = "ISHCHIBOR";
     statusEl.style.color = "#f59e0b";
 
-    // 6-bosqich: Uzluksiz sikl
     while (queue.length > 0) {
         const current = queue.shift();
         updateUI();
         await processStep(current);
     }
 
+    // 3. Ish tugagach tugmani qayta yoqish
     isRunning = false;
+    startBtn.disabled = false;
+    startBtn.style.opacity = '1';
+    startBtn.style.cursor = 'pointer';
+    
     statusEl.innerText = "KUTISHDA";
     statusEl.style.color = "#6366f1";
     writeLog("✅ Barcha vazifalar yakunlandi.");
 }
-// startRobot funksiyasi ichiga qo'shing:
-const startBtn = document.querySelector('.btn-start');
-startBtn.disabled = true; // Ish boshlanganda tugmani o'chirish
-startBtn.style.opacity = '0.5';
 
-// while sikli tugagandan keyin:
-startBtn.disabled = false; // Ish tugagach yoqish
-startBtn.style.opacity = '1';
-
-// 5-bosqich: Robotning asosiy harakat logikasi
 async function processStep(p) {
     const steps = [
         { m: "Robot INPUT nuqtasiga kelyapti...", t: 1500 },
@@ -68,7 +67,6 @@ async function processStep(p) {
     }
 }
 
-// 7-bosqich: Jarayonni kuzatish (Loglar)
 function writeLog(msg) {
     const win = document.getElementById('logWindow');
     const now = new Date().toLocaleTimeString();
