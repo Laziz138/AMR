@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AMR Dashboard | Smart Warehouse</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.1/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -25,26 +26,21 @@
             <button class="btn-add" onclick="addParcel()">📦 Posilka qo'shish</button>
         </div>
 
-        <div class="queue-container" id="queueList">
-            </div>
+        <div id="qr-section" style="text-align: center; margin-bottom: 20px; display: none; background: white; padding: 10px; border-radius: 10px;">
+            <p style="color: #333; font-size: 12px; margin-bottom: 5px;">Posilka QR kodi:</p>
+            <canvas id="qrCanvas"></canvas>
+        </div>
+
+        <div class="queue-container" id="queueList"></div>
 
         <button class="btn-start" onclick="startRobot()">⚡ ROBOTNI ISHGA TUSHIRISH</button>
     </div>
 
     <div class="right-section">
         <div class="status-display">
-            <div class="robot-stat">
-                <p>Holat</p>
-                <span id="robotStatus">KUTISHDA</span>
-            </div>
-            <div class="robot-stat">
-                <p>Navbat</p>
-                <span id="queueCount">0</span>
-            </div>
-            <div class="robot-stat">
-                <p>Batareya</p>
-                <span style="color: #22c55e;">100%</span>
-            </div>
+            <div class="robot-stat"><p>Holat</p><span id="robotStatus">KUTISHDA</span></div>
+            <div class="robot-stat"><p>Navbat</p><span id="queueCount">0</span></div>
+            <div class="robot-stat"><p>Batareya</p><span style="color: #22c55e;">98%</span></div>
         </div>
 
         <div class="log-window" id="logWindow">

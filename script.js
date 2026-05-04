@@ -1,30 +1,31 @@
 let queue = [];
 let isRunning = false;
 
-// Posilka qo'shish funksiyasi
 function addParcel() {
     const idInput = document.getElementById('parcelIdInput');
     const zoneSelect = document.getElementById('zoneSelect');
-    
     const id = idInput.value.trim();
     const zone = zoneSelect.value;
 
     if (id === "") {
-        alert("Iltimos, posilka ID raqamini kiriting!");
+        alert("Iltimos, ID kiriting!");
         return;
     }
 
-    queue.push({ id, zone });
-    
-    updateUI();
-    writeLog(`Yangi posilka qo'shildi: #${id} -> ${zone}`);
+    // QR Kod yaratish
+    const canvas = document.getElementById('qrCanvas');
+    QRCode.toCanvas(canvas, id, { width: 120, margin: 2 }, function (error) {
+        if (error) console.error(error);
+        document.getElementById('qr-section').style.display = 'block';
+    });
 
-    // Inputni tozalash
+    queue.push({ id, zone });
+    updateUI();
+    writeLog(`📦 Yangi posilka qo'shildi: #${id} -> ${zone}`);
     idInput.value = "";
     idInput.focus();
 }
 
-// Navbatni yangilash
 function updateUI() {
     const list = document.getElementById('queueList');
     list.innerHTML = queue.map(p => `
@@ -36,7 +37,6 @@ function updateUI() {
     document.getElementById('queueCount').innerText = queue.length;
 }
 
-// Robotni ishga tushirish
 async function startRobot() {
     if (isRunning || queue.length === 0) return;
     
@@ -44,9 +44,7 @@ async function startRobot() {
     const statusEl = document.getElementById('robotStatus');
     const startBtn = document.querySelector('.btn-start');
 
-    // Tugmani bloklash
     startBtn.disabled = true;
-    startBtn.style.opacity = '0.5';
     statusEl.innerText = "ISHCHIBOR";
     statusEl.style.color = "#f59e0b";
 
@@ -56,22 +54,20 @@ async function startRobot() {
         await processStep(current);
     }
 
-    // Robot ishini tugatdi
     isRunning = false;
     startBtn.disabled = false;
-    startBtn.style.opacity = '1';
     statusEl.innerText = "KUTISHDA";
     statusEl.style.color = "#6366f1";
-    writeLog("✅ Barcha vazifalar yakunlandi.");
+    writeLog("✅ Vazifalar yakunlandi.");
 }
 
-// Robotning harakat qadamlari
 async function processStep(p) {
     const steps = [
-        { m: `🤖 Robot #${p.id} posilka uchun INPUTga boryapti...`, t: 1500 },
-        { m: `📦 #${p.id} posilkasi olindi.`, t: 1000 },
-        { m: `🚚 Zona ${p.zone} ga harakatlanmoqda...`, t: 2500 },
-        { m: `🏁 Posilka #${p.id} manzilga yetkazildi.`, t: 1000 }
+        { m: `🤖 Robot INPUT nuqtasiga keldi.`, t: 1000 },
+        { m: `🔍 QR kod skaner qilinmoqda: #${p.id}...`, t: 1500 },
+        { m: `📦 Posilka #${p.id} yuklandi.`, t: 1000 },
+        { m: `🚚 Zona ${p.zone} ga olib ketilmoqda...`, t: 2500 },
+        { m: `🏁 Manzilga yetkazildi: Zona ${p.zone}`, t: 1000 }
     ];
 
     for (const step of steps) {
@@ -80,7 +76,6 @@ async function processStep(p) {
     }
 }
 
-// Log yozish funksiyasi
 function writeLog(msg) {
     const win = document.getElementById('logWindow');
     const now = new Date().toLocaleTimeString();
