@@ -1,15 +1,30 @@
 let queue = [];
 let isRunning = false;
 
+// Posilka qo'shish funksiyasi
 function addParcel() {
-    const zone = document.getElementById('zoneSelect').value;
-    const id = Math.floor(1000 + Math.random() * 9000);
+    const idInput = document.getElementById('parcelIdInput');
+    const zoneSelect = document.getElementById('zoneSelect');
+    
+    const id = idInput.value.trim();
+    const zone = zoneSelect.value;
+
+    if (id === "") {
+        alert("Iltimos, posilka ID raqamini kiriting!");
+        return;
+    }
+
     queue.push({ id, zone });
     
     updateUI();
     writeLog(`Yangi posilka qo'shildi: #${id} -> ${zone}`);
+
+    // Inputni tozalash
+    idInput.value = "";
+    idInput.focus();
 }
 
+// Navbatni yangilash
 function updateUI() {
     const list = document.getElementById('queueList');
     list.innerHTML = queue.map(p => `
@@ -21,18 +36,17 @@ function updateUI() {
     document.getElementById('queueCount').innerText = queue.length;
 }
 
+// Robotni ishga tushirish
 async function startRobot() {
-    // 1. Tekshiruv: agar robot band bo'lsa yoki navbat bo'sh bo'lsa, funksiyadan chiqish
     if (isRunning || queue.length === 0) return;
     
     isRunning = true;
     const statusEl = document.getElementById('robotStatus');
-    const startBtn = document.querySelector('.btn-start'); // Tugmani ushlab olish
+    const startBtn = document.querySelector('.btn-start');
 
-    // 2. Tugmani o'chirish (Visual effect)
+    // Tugmani bloklash
     startBtn.disabled = true;
     startBtn.style.opacity = '0.5';
-    startBtn.style.cursor = 'not-allowed';
     statusEl.innerText = "ISHCHIBOR";
     statusEl.style.color = "#f59e0b";
 
@@ -42,23 +56,22 @@ async function startRobot() {
         await processStep(current);
     }
 
-    // 3. Ish tugagach tugmani qayta yoqish
+    // Robot ishini tugatdi
     isRunning = false;
     startBtn.disabled = false;
     startBtn.style.opacity = '1';
-    startBtn.style.cursor = 'pointer';
-    
     statusEl.innerText = "KUTISHDA";
     statusEl.style.color = "#6366f1";
     writeLog("✅ Barcha vazifalar yakunlandi.");
 }
 
+// Robotning harakat qadamlari
 async function processStep(p) {
     const steps = [
-        { m: "Robot INPUT nuqtasiga kelyapti...", t: 1500 },
-        { m: `📦 #${p.id} posilkasi yuklandi.`, t: 1000 },
+        { m: `🤖 Robot #${p.id} posilka uchun INPUTga boryapti...`, t: 1500 },
+        { m: `📦 #${p.id} posilkasi olindi.`, t: 1000 },
         { m: `🚚 Zona ${p.zone} ga harakatlanmoqda...`, t: 2500 },
-        { m: `🏁 Posilka #${p.id} yetkazildi.`, t: 1000 }
+        { m: `🏁 Posilka #${p.id} manzilga yetkazildi.`, t: 1000 }
     ];
 
     for (const step of steps) {
@@ -67,6 +80,7 @@ async function processStep(p) {
     }
 }
 
+// Log yozish funksiyasi
 function writeLog(msg) {
     const win = document.getElementById('logWindow');
     const now = new Date().toLocaleTimeString();
