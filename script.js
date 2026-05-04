@@ -14,7 +14,7 @@ function addParcel() {
 
     // QR Kod yaratish
     const canvas = document.getElementById('qrCanvas');
-    QRCode.toCanvas(canvas, { width: 120, margin: 2 }, function (error) {
+    QRCode.toCanvas(canvas, id, { width: 120, margin: 2 }, function (error) {
         if (error) console.error(error);
         document.getElementById('qr-section').style.display = 'block';
     });
